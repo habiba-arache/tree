@@ -41,3 +41,38 @@ void readTree(Tree **p)
     scanf("%d", &New);
     insert(p, New);
 }
+
+void showTree(Tree *head)
+{
+    if (head != NULL)
+        printf("%d ", head->data);
+    showTree(head->left);
+    showTree(head->right);
+}
+
+int existX(Tree *t, int x)
+{
+    if (t != NULL)
+    {
+        if (t->data == x)
+            return 1;
+        if (t->data > x)
+            return existX(t->left, x);
+        return existX(t->right, x);
+    }
+    return 0;
+}
+
+Tree *findX(Tree *t, int x)
+{
+    if (t != NULL)
+    {
+        if (t->data == x)
+            return t;
+        if (t->data > x)
+            return findX(t->left, x);
+        return findX(t->right, x);
+    }
+    printf("not found\n");
+    return NULL;
+}
