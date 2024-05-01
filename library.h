@@ -18,20 +18,20 @@ Tree *createNode(int a)
     return p;
 }
 
-void insert(Tree **head, int a)
+Tree *insert(Tree *head, int a)
 {
-    if (*head == NULL)
+    if (head == NULL)
     {
-        *head = createNode(a);
-        return;
+        return createNode(a);
     }
-    if ((*head)->data <= a)
+
+    if (head->data <= a)
     {
-        insert(&((*head)->right), a);
-        return;
+        head->right = insert(head->right, a);
+        return head;
     }
-    insert(&((*head)->left), a);
-    return;
+    head->left = insert(head->left, a);
+    return head;
 }
 
 void readTree(Tree **p)
@@ -39,7 +39,7 @@ void readTree(Tree **p)
     int New;
     printf("\nEnter the value ");
     scanf("%d", &New);
-    insert(p, New);
+    *p = insert(*p, New);
 }
 
 void showTree(Tree *head)
@@ -76,3 +76,51 @@ Tree *findX(Tree *t, int x)
     printf("not found\n");
     return NULL;
 }
+
+// let's do it again !!
+int Height(Tree *head)
+{
+    if (head->right == head->left == NULL)
+        return 1;
+    if (Height(head->right) >= Height(head->left))
+        return (1 + Height(head->right));
+    return (1 + Height(head->left));
+}
+
+int h = 1;
+int depth(Tree *head)
+{
+    if (head->right == head->left == NULL && h == Height(head))
+        return head->data;
+    if (Height(head->right) > Height(head->left))
+    {
+        h++;
+        return depth(head->right);
+    }
+    h++;
+    return depth(head->left);
+}
+int isBalanced(Tree *head)
+{
+    if (Height(head->left) != Height(head->right)) // verification : the height's range
+        return 0;
+    return 1;
+}
+int isSymetric(Tree *left, Tree *right)
+{
+    if (right == left == NULL)
+        return 1;
+    if (right->data != left->data)
+        return 0;
+    if (isSymetric(right->left, left->right) != 1 || isSymetric(right->right, left->left) != 1)
+        return 0;
+}
+// done
+
+void reverse(Tree *root)
+{
+    Tree *temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+}
+// done
